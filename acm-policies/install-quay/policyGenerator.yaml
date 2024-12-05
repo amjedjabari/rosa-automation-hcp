@@ -1,0 +1,75 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: gen-policy-generator-quay
+policyDefaults:
+  namespace: acm-install-policies
+  remediationAction: enforce
+  consolidateManifests: false
+  policySets:
+    - quay-hub
+placementBindingDefaults:
+  name: "quay-binding"
+
+policies:
+  # Quay Policies - start
+  - name: policy-quay-init-config
+    manifests:
+      - path: config/quay-init-secret.yaml
+  - name: policy-install-quay
+    manifests:
+      - path: config/policy-install-quay.yaml
+    dependencies:
+      - name: policy-quay-init-config
+  - name: policy-config-quay
+    dependencies:
+      - name: policy-install-quay
+    manifests:
+      - path: config/policy-config-quay.yaml
+  - name: policy-quay-status
+    dependencies:
+      - name: policy-install-quay
+    manifests:
+      - path: config/policy-quay-status.yaml
+    remediationAction: inform   
+  - name: quay-config-external
+    manifests:
+      - path: config/policy-quay-configexternal.yaml
+      - path: config/policy-quay-configstore.yaml     
+  # Quay Bridge is configured with a temporary token that will expire quickly after
+  # deployment.  After quay is running, see the instructions:
+  # https://hybrid-cloud-patterns.io/devsecops/getting-started/#completing-the-quay-bridge-with-a-bearer-token
+  # Update the token in the quayadmin secret in the local-quay namespace with your
+  # bearer token.  It will be propagated to the managed clusters automatically.
+  - name: policy-hub-quay-bridge
+    dependencies:
+      - name: policy-quay-status
+    manifests:
+      - path: config/policy-hub-quay-bridge.yaml
+  - name: policy-install-cso
+    dependencies:
+      - name: policy-quay-status
+    manifests:
+      - path: config/policy-install-cso.yaml
+  - name: policy-cso-status
+    dependencies:
+      - name: policy-install-cso
+    manifests:
+      - path: config/policy-cso-status.yaml
+    remediationAction: inform
+  - name: policy-quay-bridge
+    manifests:
+      - path: config/policy-quay-bridge.yaml
+    orderManifests: true
+    policySets:
+      - quay-clusters
+  # Quay Policies - end
+policySets:
+  - name: quay-hub
+    placement:
+      placementPath: placements/hub-placement.yaml
+
+  - name: quay-clusters
+    placement:
+      placementPath: placements/clusters-placement.yaml

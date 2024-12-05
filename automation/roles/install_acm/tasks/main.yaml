@@ -1,0 +1,134 @@
+---
+- include_role:
+    name: admin_oc_login
+
+- name: Create ACM Namespace
+  kubernetes.core.k8s:
+    host: "https://api.{{ cluster_address }}:443"
+    state: "{{ state }}"
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: open-cluster-management
+
+- name: Create OperatorGroup for ACM Operator
+  kubernetes.core.k8s:
+    host: "https://api.{{ cluster_address }}:443"
+    state: "{{ state }}"
+    api_version: operators.coreos.com/v1
+    definition:
+      kind: OperatorGroup
+      metadata:
+        name: open-cluster-management
+        namespace: open-cluster-management
+      spec:
+        targetNamespaces:
+          - open-cluster-management
+
+- name: Create Subscription for ACM Operator
+  kubernetes.core.k8s:
+    host: "https://api.{{ cluster_address }}:443"
+    state: "{{ state }}"
+    api_version: operators.coreos.com/v1alpha1
+    definition:
+      kind: Subscription
+      metadata:
+        name: advanced-cluster-management
+        namespace: open-cluster-management
+        labels:
+          operators.coreos.com/advanced-cluster-management.open-cluster-management: ""
+      spec:
+        channel: release-2.12
+        installPlanApproval: Automatic
+        name: advanced-cluster-management
+        source: redhat-operators
+        sourceNamespace: openshift-marketplace
+
+- name: Wait for ACM Hub Operator Deployment to become available
+  kubernetes.core.k8s_info:
+    host: "https://api.{{ cluster_address }}:443"
+    kind: Deployment
+    name: multiclusterhub-operator
+    namespace: open-cluster-management
+    wait: true
+    wait_condition:
+      reason: MinimumReplicasAvailable
+      type: Available
+    wait_sleep: 1
+    wait_timeout: 480
+
+- name: Update ACM Subscription for Manual update approval
+  kubernetes.core.k8s:
+    host: "https://api.{{ cluster_address }}:443"
+    state: "{{ state }}"
+    api_version: operators.coreos.com/v1alpha1
+    definition:
+      kind: Subscription
+      metadata:
+        name: advanced-cluster-management
+        namespace: open-cluster-management
+      spec:
+        installPlanApproval: Manual
+
+- name: Create MultiClusterHub
+  kubernetes.core.k8s:
+    host: "https://api.{{ cluster_address }}:443"
+    state: "{{ state }}"
+    api_version: operator.open-cluster-management.io/v1
+    definition:
+      kind: MultiClusterHub
+      metadata:
+        name: multiclusterhub
+        namespace: open-cluster-management
+      spec:
+        availabilityConfig: Basic
+
+- name: Wait for ACM MultiClusterHub to become available
+  kubernetes.core.k8s_info:
+    host: "https://api.{{ cluster_address }}:443"
+    kind: MultiClusterHub
+    name: multiclusterhub
+    namespace: open-cluster-management
+    wait: true
+    wait_condition:
+      reason: ComponentsAvailable
+      type: Complete
+    wait_sleep: 15
+    wait_timeout: 1200
+
+- name: Create Namespace
+  kubernetes.core.k8s:
+    host: "https://api.{{ cluster_address }}:443"
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: acm-install-policies
+
+- name: Create ManagedClusterSets
+  kubernetes.core.k8s:
+    host: "https://api.{{ cluster_address }}:443"
+    definition: "{{ lookup('file', item) | from_yaml }}"
+  loop:
+    - ManagedClusterSet-Hub.yaml
+    - ManagedClusterSet-HCPManagedClusters.yaml
+    - ManagedClusterSet-ACSOnlyClusters.yaml
+    - ManagedClusterSetBinding-Hub.yaml
+    - ManagedClusterSetBinding-HCPManagedClusters.yaml
+    - ManagedClusterSetBinding-ACSOnlyClusters.yaml
+    - ClusterRole-Hub.yaml
+    - ClusterRole-ACSOnlyClusters.yaml
+    - ClusterRole-HCPManagedClusters.yaml
+
+- name: Add local-cluster to Hub Cluster Set
+  kubernetes.core.k8s:
+    host: "https://api.{{ cluster_address }}:443"
+    definition:
+      apiVersion: cluster.open-cluster-management.io/v1
+      kind: ManagedCluster
+      metadata:
+        name: local-cluster
+        labels:
+          cluster.open-cluster-management.io/clusterset: hub-cluster
+...

@@ -1,0 +1,11 @@
+---
+- include_role:
+    name: admin_oc_login
+
+- name: "Get ServiceAccount Token"
+  shell: "oc create token {{ service_account_name }} -n {{ service_account_namespace }}"
+  register: token_request
+
+- set_fact:
+    sa_token: "{{ token_request.stdout }}"
+...

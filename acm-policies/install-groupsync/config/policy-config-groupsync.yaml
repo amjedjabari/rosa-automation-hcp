@@ -1,0 +1,43 @@
+---
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: GroupSync
+metadata:
+  name: rosa-groupsync
+  namespace: group-sync-operator
+spec:
+  providers:
+    - ldap:
+        credentialsSecret:
+          kind: Secret
+          name: osrosa-ldapbinding
+          namespace: group-sync-operator
+        caSecret:
+          kind: Secret
+          name: osrosa-3mcacerts
+          namespace: group-sync-operator  
+        insecure: false
+        rfc2307:
+          usersQuery:
+            baseDN: 'OU=Mail-Routing,OU=Groups,OU=FAP,O=3M'
+            derefAliases: never
+            pageSize: 0
+            scope: sub
+          groupNameAttributes:
+            - cn
+          tolerateMemberNotFoundErrors: true
+          tolerateMemberOutOfScopeErrors: true
+          groupUIDAttribute: dn
+          groupMembershipAttributes:
+            - member
+          userNameAttributes:
+            - uid
+          groupsQuery:
+            baseDN: 'OU=Mail-Routing,OU=Groups,OU=FAP,O=3M'
+            derefAliases: always
+            filter: (&(objectClass=group)(cn=OSCP-*))
+            pageSize: 0
+            scope: sub
+          userUIDAttribute: dn
+        url: ldaps://ldap-pdint-t2.mmm.com:636/OU=Internal,OU=People,OU=FAP,O=3M?uid?sub?(&(objectClass=Person)(memberOf=CN=US-MN-Maplewood-OSE-Users,OU=Mail-Routing,OU=Groups,OU=FAP,O=3M))
+      name: ldap
+  schedule: 0 * * * *
