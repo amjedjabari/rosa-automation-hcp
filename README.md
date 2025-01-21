@@ -15,12 +15,12 @@ To work with this repository locally you will need clone it using https or ssh a
 
 For https:
 ```
-git clone https://github.com/SkylarScaling/61502-automation.git
+git clone https://github.com/amjedjabari/rosa-automation-hcp.git
 ```
 
 For ssh:
 ```
-git clone git@github.com:SkylarScaling/61502-automation.git
+git clone git@github.com:amjedjabari/rosa-automation-hcp.git
 ```
 
 # Assertions and Assumptions
