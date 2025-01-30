@@ -1,7 +1,7 @@
 # OpenShift Infrastructure Automation
 This directory contains Ansible playbooks and roles for installing Infrastructure components on OpenShift, including Red Hat OpenShift Platform Plus components.
 
-**Note:**
+> [!Note]
 
 Most playbooks include a commented out `vars_prompt` block that can be uncommented to prompt for required variables. 
 
@@ -23,10 +23,7 @@ Generate secret.yaml via ansible-vault
 
 ```
  ansible-vault create secret.yaml
-
 ``` 
-
-```
 The content of the secret.yaml will be in the following format
 ```
 accessToken: xxx
@@ -49,8 +46,9 @@ ansible-playbook /home/username/rosa-automation/automation/create-services-clust
 
 The above command will perform the full infrastructure installation via Ansible automation.
 
+> [!Note]
 
-**Note:** The above command will execute the playbook with the following option `--vault-id @prompt` which is used inject the github token credentials for the secret `osrosa-acm-git-secret` secret in `acm-install-policies` namespace.
+The above command will execute the playbook with the following option `--vault-id @prompt` which is used inject the github token credentials for the secret `osrosa-acm-git-secret` secret in `acm-install-policies` namespace.
 
 
 This includes:
@@ -110,7 +108,8 @@ ansible-playbook create-shared-cluster.yaml -i <inventory file>
 
 The create-shared-cluster.yaml playbook will be applying the configurations that are included in shared-cluster-day2.yaml to apply the day2 configurations on the shared cluster.
 
-**Note**
+> [!Note]
+
 Generate Oauth token for Quay Integration:
 
 After the shared cluster is provisioned and cluster health is verified, follow these steps to generate a new token in quay manually to allow integrations between namespaces in OpenShift cluster and Quay Registry for authentication:
@@ -135,5 +134,3 @@ type: Opaque
 4- Restart the pods by going to Workloads in the openshift console on the services cluster and click on Deployments, on each deployment click on the three dots on the right side of the panel, and select Restart rollout, repeat the restart rollout for all deployments and wait for all pods in local-quay to start running again.
 
 5- Testing Quay integration. On the shared cluster create a new project, once the project is created you will notice after logging to quay the new organization with prefix openshift_project name.
-
- 
