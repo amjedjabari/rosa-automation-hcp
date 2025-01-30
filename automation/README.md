@@ -74,6 +74,11 @@ C- Update the value of `aws_iam_role_name` variable for creating a new role name
 
 `ManagedOpenShift-HCP-access-to-ClusterName-eso-service-role`
 
+
+D- Update the value of `aws_s3_role_name` variable for creating a new role name to manage the observability service, example of role name: 
+
+`Managed-OpenShift-HCP-access-to-ClusterName-s3-service-role`
+
 Note: Make sure the IAM policies: ManagedOpenShift-HCP-access-to-aws-s3-rosa-policy, Managed-OpenShift-HCP-access-to-aws-secret-manager-rosa-policy along with the following permission boundry iam-role-permissions-boundary-rosa and verify the ARN's for the policies
 
 E- Verify KMS key exits in AWS account, KMS key should have a tag of red-hat=true, request the Key to be created by Platform Engineering team
@@ -131,3 +136,4 @@ type: Opaque
 
 5- Testing Quay integration. On the shared cluster create a new project, once the project is created you will notice after logging to quay the new organization with prefix openshift_project name.
 
+ 
