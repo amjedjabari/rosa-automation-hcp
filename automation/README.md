@@ -17,6 +17,32 @@ ansible-playbook install-infra.yaml -i inventory
 
 Execute the ansible playbook:
 
+Generate secret.yaml in your user home directory for `osrosa-acm-git-secret` secret in `acm-install-policies` namespace, this secret is used to authenticate ROSA HCP cluster to github rosa-automation repo to deploy the ACM policies.
+
+Generate secret.yaml via ansible-vault
+
+```
+ ansible-vault create secret.yaml
+
+``` 
+
+```
+The content of the secret.yaml will be in the following format
+```
+accessToken: xxx
+user: xxxx
+```
+
+add a password for the vault file, then paste the content `username` & `github token`
+
+To view the content of the secret.yaml file use: 
+
+``` 
+ansible-vault view secret.yaml
+``` 
+enter the password.
+
+Run the following command to provision a Service Cluster after prerequisites are verified
 ```
 ansible-playbook /home/username/rosa-automation/automation/create-services-cluster.yaml -i /home/username/path-to-inventory-file --vault-id @prompt
 ```
@@ -48,34 +74,15 @@ C- Update the value of `aws_iam_role_name` variable for creating a new role name
 
 `ManagedOpenShift-HCP-access-to-ClusterName-eso-service-role`
 
+Note: Make sure the IAM policies: ManagedOpenShift-HCP-access-to-aws-s3-rosa-policy, Managed-OpenShift-HCP-access-to-aws-secret-manager-rosa-policy along with the following permission boundry iam-role-permissions-boundary-rosa and verify the ARN's for the policies
 
-D- Update the value of `aws_s3_role_name` variable for creating a new role name to manage the observability service, example of role name: 
-
-`Managed-OpenShift-HCP-access-to-ClusterName-s3-service-role`
-
-Note: When provisioning a new cluster, the following file must be updated `acm-policies/install-mco/config/observability.yml` to include the value of `aws_s3_role_name`  
+E- Verify KMS key exits in AWS account, KMS key should have a tag of red-hat=true, request the Key to be created by Platform Engineering team
 
 4- Executing the ansible playbook, to execute the playbook make sure to navigate to rosa-automation directory in your user home directory first then execute the playbook:
 
 ```
 cd rosa-automation
 ```
-
-Generate secret.yaml in your user home directory for `osrosa-acm-git-secret` secret in `acm-install-policies` namespace, this secret is used to authenticate ROSA HCP cluster to github rosa-automation repo to deploy the ACM policies.
-
-Generate secret.yaml via ansible-vault
-
-```
- ansible-vault create secret.yaml
-``` 
-add a password for the vault file, then paste the content `username` & `github token`
-
-To view the content of the secret.yaml file use: 
-
-``` 
-ansible-vault view secret.yaml
-``` 
-enter the password.
 
 ### Running the Playbook
 Example:
@@ -95,8 +102,8 @@ Example:
 ansible-playbook create-shared-cluster.yaml -i <inventory file>
 ```
 
-The create-shared-cluster.yaml playbook will be applying the configurations that are included in shared-cluster-day2.yaml to apply the day2 configurations on the shared cluster.
 
+The create-shared-cluster.yaml playbook will be applying the configurations that are included in shared-cluster-day2.yaml to apply the day2 configurations on the shared cluster.
 
 **Note**
 Generate Oauth token for Quay Integration:
@@ -123,3 +130,4 @@ type: Opaque
 4- Restart the pods by going to Workloads in the openshift console on the services cluster and click on Deployments, on each deployment click on the three dots on the right side of the panel, and select Restart rollout, repeat the restart rollout for all deployments and wait for all pods in local-quay to start running again.
 
 5- Testing Quay integration. On the shared cluster create a new project, once the project is created you will notice after logging to quay the new organization with prefix openshift_project name.
+
