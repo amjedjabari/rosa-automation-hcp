@@ -24,6 +24,12 @@ policies:
     manifests:
       - path: config/policy-configure-log-forwarder.yaml
   # Log Foward policy - end    
+  # External Secret policy - start
+  - name: externalsecret
+    manifests:
+      - path: externalsecret/policy-externalsecret.yaml
+      - path: externalsecret/policy-externalstore.yaml
+  # Log External Secret policy - end   
 policySets:
   - name: cluster-logging
     placement:

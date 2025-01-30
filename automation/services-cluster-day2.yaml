@@ -72,13 +72,24 @@
         min_replicas: 1
         max_replicas: 1
         instance_type: m5a.2xlarge
-
+    
     - include_role:
         name: admin_config_acm_github_authentication
       vars:
         cluster_address: "{{ ocp_cluster_address }}"
         admin_user: "{{ cluster_admin_user }}"
-        admin_password: "{{ cluster_admin_password }}"
+        admin_password: "{{ cluster_admin_password }}"       
+
+    - include_role:
+        name: install_groupsync_from_subscription
+      vars:
+        cluster_address: "{{ ocp_cluster_address }}"
+
+    - include_role:
+        name: install_eso_from_subscription
+      vars:  
+        cluster_address: "{{ ocp_cluster_address }}"
+        admin_password: "{{ cluster_admin_password }}" 
 
     - include_role:
         name: aws_create_configmap
@@ -88,12 +99,7 @@
         service_account_namespace: "{{ acm_service_account_namespace }}"
 
     - include_role:
-        name: install_groupsync_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
-
-    - include_role:
-        name: install_eso_from_subscription
+        name: install_cost_management_from_subscription
       vars:
         cluster_address: "{{ ocp_cluster_address }}"
 
@@ -108,11 +114,6 @@
         cluster_address: "{{ ocp_cluster_address }}"
 
     - include_role:
-        name: install_mco_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
-
-    - include_role:
         name: install_logging_from_subscription
       vars:
         cluster_address: "{{ ocp_cluster_address }}"
@@ -123,12 +124,13 @@
         cluster_address: "{{ ocp_cluster_address }}"
 
     - include_role:
-        name: install_quay_from_subscription
+        name: install_mco_from_subscription
       vars:
         cluster_address: "{{ ocp_cluster_address }}"
+        
 
     - include_role:
-        name: install_cost_management_from_subscription
+        name: install_quay_from_subscription
       vars:
         cluster_address: "{{ ocp_cluster_address }}"
 
@@ -137,7 +139,26 @@
       vars:
         cluster_address: "{{ ocp_cluster_address }}"
 
-    # TODO Cleanup Automation Admin Accounts
+    - include_role:
+        name: install_developer_hub_from_subscription
+      vars:
+        cluster_address: "{{ ocp_cluster_address }}" 
 
     - include_role:
-        name: admin_oc_logout
+        name: install_openshift_pipelines_from_subscription
+      vars:
+        cluster_address: "{{ ocp_cluster_address }}"    
+
+    - include_role:
+        name: install_argocd_from_subscription
+      vars:
+        cluster_address: "{{ ocp_cluster_address }}"                  
+ 
+    - include_role:
+        name: install_keycloak_from_subscription
+      vars:
+        cluster_address: "{{ ocp_cluster_address }}"     
+
+
+    - include_role:
+        name: admin_oc_logout    
