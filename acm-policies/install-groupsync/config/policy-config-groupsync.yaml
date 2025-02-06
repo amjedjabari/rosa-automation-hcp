@@ -18,7 +18,7 @@ spec:
         insecure: false
         rfc2307:
           usersQuery:
-            baseDN: 'OU=Mail-Routing,OU=Groups,OU=FAP,O=3M'
+            baseDN: 'xxxxxxxx'
             derefAliases: never
             pageSize: 0
             scope: sub
