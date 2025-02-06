@@ -32,12 +32,12 @@ spec:
           userNameAttributes:
             - uid
           groupsQuery:
-            baseDN: 'OU=Mail-Routing,OU=Groups,OU=FAP,O=3M'
+            baseDN: 'xxxxxxx'
             derefAliases: always
-            filter: (&(objectClass=group)(cn=OSCP-*))
+            filter: xxxxxxxxxxxxx
             pageSize: 0
             scope: sub
           userUIDAttribute: dn
-        url: ldaps://ldap-pdint-t2.mmm.com:636/OU=Internal,OU=People,OU=FAP,O=3M?uid?sub?(&(objectClass=Person)(memberOf=CN=US-MN-Maplewood-OSE-Users,OU=Mail-Routing,OU=Groups,OU=FAP,O=3M))
+        url: xxxxxxxxx
       name: ldap
   schedule: 0 * * * *
