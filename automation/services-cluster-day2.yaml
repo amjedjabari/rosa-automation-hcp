@@ -37,53 +37,53 @@
         admin_user: "{{ cluster_admin_user }}"
         admin_password: "{{ cluster_admin_password }}"
 
-    - include_role:
-        name: admin_config_ldap
+    # - include_role:
+    #     name: admin_config_ldap
 
-    - include_role:
-        name: admin_config_machine_pool
-      vars:
-        subnet: "{{ subnet_id1 }}"
-        machinepool_name: quay-1
-        machinepool_labels: node-role.kubernetes.io/infra=,node-role.kubernetes.io/quay=
-        machinepool_taints: ''
-        min_replicas: 1
-        max_replicas: 1
-        instance_type: m5a.2xlarge
+    # - include_role:
+    #     name: admin_config_machine_pool
+    #   vars:
+    #     subnet: "{{ subnet_id1 }}"
+    #     machinepool_name: quay-1
+    #     machinepool_labels: node-role.kubernetes.io/infra=,node-role.kubernetes.io/quay=
+    #     machinepool_taints: ''
+    #     min_replicas: 1
+    #     max_replicas: 1
+    #     instance_type: m5a.2xlarge
 
-    - include_role:
-        name: admin_config_machine_pool
-      vars:
-        subnet: "{{ subnet_id2 }}"
-        machinepool_name: quay-2
-        machinepool_labels: node-role.kubernetes.io/infra=,node-role.kubernetes.io/quay=
-        machinepool_taints: ''
-        min_replicas: 1
-        max_replicas: 1
-        instance_type: m5a.2xlarge
+    # - include_role:
+    #     name: admin_config_machine_pool
+    #   vars:
+    #     subnet: "{{ subnet_id2 }}"
+    #     machinepool_name: quay-2
+    #     machinepool_labels: node-role.kubernetes.io/infra=,node-role.kubernetes.io/quay=
+    #     machinepool_taints: ''
+    #     min_replicas: 1
+    #     max_replicas: 1
+    #     instance_type: m5a.2xlarge
 
-    - include_role:
-        name: admin_config_machine_pool
-      vars:
-        subnet: "{{ subnet_id3 }}"
-        machinepool_name: quay-3
-        machinepool_labels: node-role.kubernetes.io/infra=,node-role.kubernetes.io/quay=
-        machinepool_taints: ''
-        min_replicas: 1
-        max_replicas: 1
-        instance_type: m5a.2xlarge
+    # - include_role:
+    #     name: admin_config_machine_pool
+    #   vars:
+    #     subnet: "{{ subnet_id3 }}"
+    #     machinepool_name: quay-3
+    #     machinepool_labels: node-role.kubernetes.io/infra=,node-role.kubernetes.io/quay=
+    #     machinepool_taints: ''
+    #     min_replicas: 1
+    #     max_replicas: 1
+    #     instance_type: m5a.2xlarge
     
-    - include_role:
-        name: admin_config_acm_github_authentication
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
-        admin_user: "{{ cluster_admin_user }}"
-        admin_password: "{{ cluster_admin_password }}"       
+    # - include_role:
+    #     name: admin_config_acm_github_authentication
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"
+    #     admin_user: "{{ cluster_admin_user }}"
+    #     admin_password: "{{ cluster_admin_password }}"       
 
-    - include_role:
-        name: install_groupsync_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
+    # - include_role:
+    #     name: install_groupsync_from_subscription
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"
 
     - include_role:
         name: install_eso_from_subscription
@@ -91,73 +91,73 @@
         cluster_address: "{{ ocp_cluster_address }}"
         admin_password: "{{ cluster_admin_password }}" 
 
-    - include_role:
-        name: aws_create_configmap
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
-        service_account_name: "{{ acm_service_account_name }}"
-        service_account_namespace: "{{ acm_service_account_namespace }}"
+    # - include_role:
+    #     name: aws_create_configmap
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"
+    #     service_account_name: "{{ acm_service_account_name }}"
+    #     service_account_namespace: "{{ acm_service_account_namespace }}"
 
-    - include_role:
-        name: install_cost_management_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
+    # - include_role:
+    #     name: install_cost_management_from_subscription
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"
 
-    - include_role:
-        name: admin_config_rbac
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
+    # - include_role:
+    #     name: admin_config_rbac
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"
 
-    - include_role:
-        name: install_trident_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
+    # - include_role:
+    #     name: install_trident_from_subscription
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"
 
-    - include_role:
-        name: install_logging_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
+   #- include_role:
+   #    name: install_logging_from_subscription
+   #  vars:
+   #    cluster_address: "{{ ocp_cluster_address }}"
 
-    - include_role:
-        name: install_acs_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
+    # - include_role:
+    #     name: install_acs_from_subscription
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"
 
-    - include_role:
-        name: install_mco_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
+    # - include_role:
+    #     name: install_mco_from_subscription
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"
         
 
-    - include_role:
-        name: install_quay_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
+    # - include_role:
+    #     name: install_quay_from_subscription
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"
 
-    - include_role:
-        name: install_cma_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"
+    # - include_role:
+    #     name: install_cma_from_subscription
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"
 
-    - include_role:
-        name: install_developer_hub_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}" 
+    # - include_role:
+    #     name: install_developer_hub_from_subscription
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}" 
 
-    - include_role:
-        name: install_openshift_pipelines_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"    
+    # - include_role:
+    #     name: install_openshift_pipelines_from_subscription
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"    
 
-    - include_role:
-        name: install_argocd_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"                  
+    # - include_role:
+    #     name: install_argocd_from_subscription
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"                  
  
-    - include_role:
-        name: install_keycloak_from_subscription
-      vars:
-        cluster_address: "{{ ocp_cluster_address }}"     
+    # - include_role:
+    #     name: install_keycloak_from_subscription
+    #   vars:
+    #     cluster_address: "{{ ocp_cluster_address }}"     
 
 
     - include_role:
