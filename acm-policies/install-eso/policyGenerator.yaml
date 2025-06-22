@@ -23,6 +23,12 @@ policies:
     manifests:
       - path: external-secrets-operator/instance/policy-instance.yaml
   # ESO Instance policy - end
+   # ESO Store policy - start
+  - name: external-secrets-secret-app-demo
+    manifests:
+      - path: external-secrets-operator/store/policy-externalsecret.yaml
+      - path: external-secrets-operator/store/policy-secretstore.yaml
+  # ESO Store policy - end 
 
 policySets:
   - name: install-eso
