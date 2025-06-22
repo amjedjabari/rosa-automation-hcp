@@ -1,5 +1,5 @@
 ---
-subscription_repo_url: https://github.com/skylarscaling/61502-automation.git
+subscription_repo_url: https://github.com/amjedjabari/rosa-automation-hcp
 subscription_branch: eso-test-demo
 state: present
 cluster_admin_service_account_name: ansible-playbook-service-account-cluster-admin
