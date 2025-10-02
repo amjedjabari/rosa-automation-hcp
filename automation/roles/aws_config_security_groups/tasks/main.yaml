@@ -17,7 +17,7 @@
 #     vpce_id: "{{ existing_endpoints.vpc_endpoints[0].vpc_endpoint_id }}"
 #     vpc_endpoint_type: "{{ existing_endpoints.vpc_endpoints[0].vpc_endpoint_type }}"
 
-# - name: Configure AWS VPC Endpoint to access 3M API
+# - name: Configure AWS VPC Endpoint to access xx API
 #   command:
 #     argv:
 #       - aws
@@ -26,7 +26,7 @@
 #       - --vpc-endpoint-id
 #       - "{{ vpce_id }}"
 #       - --add-security-group-ids
-#       - "{{ DEFAULT_3M_SG_ID }}"
+#       - "{{ DEFAULT_xx_SG_ID }}"
 
 - name: Get Security Group info by tag and cluster name
   amazon.aws.ec2_security_group_info:

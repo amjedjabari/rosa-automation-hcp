@@ -13,7 +13,7 @@ spec:
           namespace: group-sync-operator
         caSecret:
           kind: Secret
-          name: osrosa-3mcacerts
+          name: osrosa-xxcacerts
           namespace: group-sync-operator  
         insecure: false
         rfc2307:

@@ -180,7 +180,7 @@
                       options:
                         subject: legacy-default-config
                         # This is a default value, which you should change by providing your own app-config
-                        secret: "pl4s3Ch4ng3M3"
+                        secret: "pl4s3Ch4ngxx3"
               auth:
                   environment: production
                   providers:
